@@ -6,3 +6,4 @@ module.exports.error = (err, res, errorName, errorMessage) => {
     }
     return res.status(500).send({ message: '500 — ошибка по-умолчанию' });
   };
+  
