@@ -101,9 +101,9 @@ const updateAvatar = (req, res) => {
 };
 
 module.exports = {
-  getUsers,
-  getUser,
   createUser,
+  getUser,
+  getUsers,
   updateUser,
   updateAvatar,
 };
