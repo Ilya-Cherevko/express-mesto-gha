@@ -44,7 +44,7 @@ const deleteCard = (req, res) => {
 const addLike = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
-    { $addToSet: { likes: req.user._id } }, // добавление id в массив
+    { $addToSet: { likes: req.user._id } }, // добавить id в массив
     { new: true },
   )
     .orFail(new Error('NoValidId'))
