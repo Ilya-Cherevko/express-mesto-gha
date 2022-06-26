@@ -5,3 +5,5 @@
     "linebreak-style": ["error", "windows"]
  }
 }
+
+//"no-underscore-dangle": ["off",{"allow":["id"]}],
