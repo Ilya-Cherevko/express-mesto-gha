@@ -34,7 +34,7 @@ const deleteCard = (req, res) => {
     .catch((err) => {
       if (err.message === 'NoValidId') {
         res
-          .status(BAD_REQ_NOT_FOUND)
+          .status(404)
           .send({ message: '404 — карточка с указанным id не найдена.' });
       }
       error(err, res, 'CastError', '400 - переданы некорректные данные при удалении карточки');
@@ -54,7 +54,7 @@ const addLike = (req, res) => {
     .catch((err) => {
       if (err.message === 'NoValidId') {
         res
-          .status(BAD_REQ_NOT_FOUND)
+          .status(404)
           .send({ message: '404 — передан несуществующий id карточки' });
       }
       error(
@@ -79,7 +79,7 @@ const deleteLike = (req, res) => {
     .catch((err) => {
       if (err.message === 'NoValidId') {
         res
-          .status(BAD_REQ_NOT_FOUND)
+          .status(404)
           .send({ message: '404 — передан несуществующий id карточки' });
       }
       error(

@@ -38,7 +38,7 @@ const getUser = (req, res) => {
     })
     .catch((err) => {
       if (err.message === 'NoValidId') {
-        res.status(BAD_REQ_NOT_FOUND).send({
+        res.status(404).send({
           message: '404 - пользователь по указанному _id не найден',
         });
       } else {
