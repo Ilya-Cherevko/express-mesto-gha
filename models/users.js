@@ -4,13 +4,13 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    minlength: [2, 'Должнобыть не меньше 2, имеется {VALUE}'],
+    minlength: [2, 'Должно быть не меньше 2, имеется {VALUE}'],
     maxlength: 30,
   },
   about: {
     type: String,
     required: true,
-    minlength: [2, 'Должнобыть не меньше 2, имеется {VALUE}'],
+    minlength: [2, 'Должно быть не меньше 2, имеется {VALUE}'],
     maxlength: 30,
   },
   avatar: {
