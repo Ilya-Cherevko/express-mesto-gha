@@ -4,11 +4,12 @@ const { error } = require('../utils/errors');
 const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
 
-  User.create({ 
-    name, 
-    about, 
-    avatar })
-    
+  User.create({
+    name,
+    about,
+    avatar,
+  })
+
     .then((user) => res.send(user))
     .catch((err) => {
       error(
@@ -25,6 +26,7 @@ const getUsers = (req, res) => {
     .find({})
     .then((user) => res.send(user))
     .catch(() => {
+      // eslint-disable-next-line no-undef
       res.status(DEF_ERR_CODE).send({ message: '500 — на сервере произошла ошибка по-умолчанию' });
     });
 };
