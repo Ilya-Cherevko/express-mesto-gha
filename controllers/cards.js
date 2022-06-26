@@ -4,7 +4,7 @@ const { error } = require('../utils/errors');
 const getCards = (req, res) => {
   Card.find()
     .then((card) => res.send(card))
-    .catch(() => res.status(500).send({ message: '500 — на сервере произошла ошибка по-умолчанию' }));
+    .catch(() => res.status(DEF_ERR_CODE).send({ message: '500 — на сервере произошла ошибка по-умолчанию' }));
 };
 
 const createCard = (req, res) => {
@@ -34,7 +34,7 @@ const deleteCard = (req, res) => {
     .catch((err) => {
       if (err.message === 'NoValidId') {
         res
-          .status(404)
+          .status(BAD_REQ_NOT_FOUND)
           .send({ message: '404 — карточка с указанным id не найдена.' });
       }
       error(err, res, 'CastError', '400 - переданы некорректные данные при удалении карточки');
@@ -54,7 +54,7 @@ const addLike = (req, res) => {
     .catch((err) => {
       if (err.message === 'NoValidId') {
         res
-          .status(404)
+          .status(BAD_REQ_NOT_FOUND)
           .send({ message: '404 — передан несуществующий id карточки' });
       }
       error(
@@ -79,7 +79,7 @@ const deleteLike = (req, res) => {
     .catch((err) => {
       if (err.message === 'NoValidId') {
         res
-          .status(404)
+          .status(BAD_REQ_NOT_FOUND)
           .send({ message: '404 — передан несуществующий id карточки' });
       }
       error(

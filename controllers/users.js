@@ -25,7 +25,7 @@ const getUsers = (req, res) => {
     .find({})
     .then((user) => res.send(user))
     .catch(() => {
-      res.status(500).send({ message: '500 — на сервере произошла ошибка по-умолчанию' });
+      res.status(DEF_ERR_CODE).send({ message: '500 — на сервере произошла ошибка по-умолчанию' });
     });
 };
 
@@ -38,7 +38,7 @@ const getUser = (req, res) => {
     })
     .catch((err) => {
       if (err.message === 'NoValidId') {
-        res.status(404).send({
+        res.status(BAD_REQ_NOT_FOUND).send({
           message: '404 - пользователь по указанному _id не найден',
         });
       } else {
