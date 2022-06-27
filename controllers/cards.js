@@ -1,10 +1,12 @@
 const Card = require('../models/cards');
-const { error } = require('../utils/errors');
+const {
+  error,
+  DEF_ERR_CODE,
+} = require('../utils/errors');
 
 const getCards = (req, res) => {
   Card.find()
     .then((card) => res.send(card))
-    // eslint-disable-next-line no-undef
     .catch(() => res.status(DEF_ERR_CODE).send({ message: '500 — на сервере произошла ошибка по-умолчанию' }));
 };
 
