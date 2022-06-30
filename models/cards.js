@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { reqExpLink } = require('../utils/constants');
 
 const cardSchema = new mongoose.Schema({
   name: {
@@ -10,6 +11,11 @@ const cardSchema = new mongoose.Schema({
   link: {
     type: String,
     required: true,
+    validate: {
+      validator(link) {
+        return reqExpLink.test(link);
+      },
+    },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
@@ -19,6 +25,7 @@ const cardSchema = new mongoose.Schema({
   likes: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'user',
+    required: true,
     default: [],
   },
   createdAt: {

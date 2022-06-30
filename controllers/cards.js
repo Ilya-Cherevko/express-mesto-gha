@@ -1,97 +1,100 @@
 const Card = require('../models/cards');
-const {
-  error,
-  DEF_ERR_CODE,
-} = require('../utils/errors');
+const NotFoundError = require('../utils/errors/not-found-err');
+const BadRequestError = require('../utils/errors/bad-req-err');
+const ForbiddenError = require('../utils/errors/forbid-err');
 
-const getCards = (req, res) => {
+const getCards = (_, res, next) => {
   Card.find()
-    .then((card) => res.send(card))
-    .catch(() => res.status(DEF_ERR_CODE).send({ message: '500 — на сервере произошла ошибка по-умолчанию' }));
+    .then((card) => res.send(card.reverse()))
+    .catch((err) => next(err));
 };
 
-const createCard = (req, res) => {
+const createCard = (req, res, next) => {
   const { name, link } = req.body;
 
-  Card.create({
-    name,
-    link,
-    owner: req.user._id,
-  })
+  Card.create({ name, link, owner: req.user._id })
     .then((card) => res.send(card))
     .catch((err) => {
-      error(
-        err,
-        res,
-        'ValidationError',
-        '400 - переданы некорректные данные при создании карточки',
-      );
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Переданы некорректные данные при создании карточки.'));
+        return;
+      }
+      next(err);
     });
 };
 
-const deleteCard = (req, res) => {
-  Card.findByIdAndRemove(req.params.cardId)
-    .orFail(new Error('NoValidId'))
+const deleteCard = (req, res, next) => {
+  const { cardId } = req.params;
+
+  Card.findById(cardId)
     .then((card) => {
-      res.send(card);
+      if (!card) {
+        next(new NotFoundError('Карточка с указанным id не найдена.'));
+        return;
+      }
+
+      if (JSON.stringify(card.owner) !== JSON.stringify(req.user._id)) {
+        next(new ForbiddenError('Невозможно удалить карточку.'));
+        return;
+      }
+
+      // eslint-disable-next-line consistent-return
+      return Card.findByIdAndDelete(cardId);
+    })
+    .then((c) => {
+      res.send({ c });
     })
     .catch((err) => {
-      if (err.message === 'NoValidId') {
-        res
-          .status(404)
-          .send({ message: '404 — карточка с указанным id не найдена.' });
+      if (err.kind === 'ObjectId') {
+        next(new BadRequestError('Передан некорректный id карточки.'));
+        return;
       }
-      error(err, res, 'CastError', '400 - переданы некорректные данные при удалении карточки');
+      next(err);
     });
 };
 
-const addLike = (req, res) => {
+const addLike = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } }, // добавить id в массив
     { new: true },
   )
-    .orFail(new Error('NoValidId'))
     .then((card) => {
+      if (!card) {
+        next(new NotFoundError('Передан несуществующий id карточки.'));
+        return;
+      }
       res.send(card);
     })
     .catch((err) => {
-      if (err.message === 'NoValidId') {
-        res
-          .status(404)
-          .send({ message: '404 — передан несуществующий id карточки' });
+      if (err.kind === 'ObjectId') {
+        next(new BadRequestError('Переданы некорректные данные для постановки лайка.'));
+        return;
       }
-      error(
-        err,
-        res,
-        'CastError',
-        '400 — переданы некорректные данные для постановки лайка',
-      );
+      next(err);
     });
 };
 
-const deleteLike = (req, res) => {
+const deleteLike = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } }, // убрать id из массива
     { new: true },
   )
-    .orFail(new Error('NoValidId'))
     .then((card) => {
+      if (!card) {
+        next(new NotFoundError('Передан несуществующий id карточки.'));
+        return;
+      }
+
       res.send(card);
     })
     .catch((err) => {
-      if (err.message === 'NoValidId') {
-        res
-          .status(404)
-          .send({ message: '404 — передан несуществующий id карточки' });
+      if (err.kind === 'ObjectId') {
+        next(new BadRequestError('Переданы некорректные данные для снятии лайка.'));
+        return;
       }
-      error(
-        err,
-        res,
-        'CastError',
-        '400 — переданы некорректные данные для снятия лайка',
-      );
+      next(err);
     });
 };
 
