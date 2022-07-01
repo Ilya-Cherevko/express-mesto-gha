@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
   },
   about: {
     type: String,
-    defauit: 'Исследователь',
+    default: 'Исследователь',
     //  required: true,
     minlength: [2, 'Должно быть не меньше 2, имеется {VALUE}'],
     maxlength: 30,

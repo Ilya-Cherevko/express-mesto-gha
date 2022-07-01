@@ -56,8 +56,7 @@ const getMeInfo = (req, res, next) => {
       if (!user) {
         // если такого пользователя нет, сгенерируем исключение
         next(new NotFoundError('Пользователь с указанным id не найден'));
-        // next(404('Пользователь по указанному id не найден.'));
-        // return;
+        return;
       }
       res.send(user);
     })
@@ -76,7 +75,7 @@ const getUser = (req, res, next) => {
     .findById(req.params.userId)
     .then((user) => {
       if (!user) {
-        next(new BadRequestError('Пользователь с указанным id не найден'));
+        next(new NotFoundError('Пользователь с указанным id не найден'));
         return;
       }
       res.send(user);
