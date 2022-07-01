@@ -6,26 +6,26 @@ const { reqExpLink } = require('../utils/constants');
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    default: 'Жак-Ив Кусто',
+    //  required: true,
     minlength: [2, 'Должно быть не меньше 2, имеется {VALUE}'],
     maxlength: 30,
-    default: 'Жак-Ив Кусто',
   },
   about: {
     type: String,
-    required: true,
+    defauit: 'Исследователь',
+    //  required: true,
     minlength: [2, 'Должно быть не меньше 2, имеется {VALUE}'],
     maxlength: 30,
-    defauit: 'Исследователь',
   },
   avatar: {
     type: String,
-    required: true,
+    // required: true,
+    default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     validate: {
       validator(link) {
         return reqExpLink.test(link);
       },
-      default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     },
   },
   email: {
@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    unique: true,
+    // unique: true,
     select: false, // необходимо добавить поле select, чтобы API не возвращал хеш пароля
   },
 });

@@ -9,7 +9,7 @@ const ConflictError = require('../utils/errors/conflict-err');
 
 const createUser = (req, res, next) => {
   const {
-    name, about, avatar, password, email,
+    name, about, avatar, email, password,
   } = req.body;
 
   bcrypt.hash(password, 10)
@@ -17,8 +17,8 @@ const createUser = (req, res, next) => {
       name,
       about,
       avatar,
-      password: hash,
       email,
+      password: hash,
     }))
 
     .then((user) => res.send({
@@ -55,7 +55,7 @@ const getMeInfo = (req, res, next) => {
     .then((user) => {
       if (!user) {
         // если такого пользователя нет, сгенерируем исключение
-        next(new NotFoundError('Нет пользователя с таким id'));
+        next(new NotFoundError('Пользователь с указанным id не найден'));
         // next(404('Пользователь по указанному id не найден.'));
         // return;
       }
@@ -64,7 +64,7 @@ const getMeInfo = (req, res, next) => {
   //    .catch(next); // добавили catch
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Пользователь по указанному id не найден.'));
+        next(new BadRequestError('Пользователь с указанным id не найден'));
         return;
       }
       next(err);
@@ -76,14 +76,14 @@ const getUser = (req, res, next) => {
     .findById(req.params.userId)
     .then((user) => {
       if (!user) {
-        next(new BadRequestError('Пользователь по указанному _id не найден.'));
+        next(new BadRequestError('Пользователь с указанным id не найден'));
         return;
       }
       res.send(user);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Пользователь по указанному _id не найден'));
+        next(new BadRequestError('Пользователь с указанным id не найден'));
         return;
       }
       next(err);

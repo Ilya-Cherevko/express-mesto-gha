@@ -1,11 +1,5 @@
 const router = require('express').Router();
 const {
-  validationProfile,
-  validationUserId,
-  validationAvatar,
-} = require('../utils/validation');
-
-const {
   getUsers,
   getUser,
   getMeInfo,
@@ -13,6 +7,11 @@ const {
   updateUser,
   updateAvatar,
 } = require('../controllers/users');
+const {
+  validationProfile,
+  validationUserId,
+  validationAvatar,
+} = require('../utils/validation');
 
 router.post('/', createUser);
 
