@@ -1,30 +1,27 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-const { reqExpLink } = require('../utils/constants');
+const { regExp } = require('../utils/constants');
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
     default: 'Жак-Ив Кусто',
-    //  required: true,
     minlength: [2, 'Должно быть не меньше 2, имеется {VALUE}'],
     maxlength: 30,
   },
   about: {
     type: String,
     default: 'Исследователь',
-    //  required: true,
     minlength: [2, 'Должно быть не меньше 2, имеется {VALUE}'],
     maxlength: 30,
   },
   avatar: {
     type: String,
-    // required: true,
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     validate: {
       validator(link) {
-        return reqExpLink.test(link);
+        return regExp.test(link);
       },
     },
   },
@@ -41,7 +38,6 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    // unique: true,
     select: false, // необходимо добавить поле select, чтобы API не возвращал хеш пароля
   },
 });

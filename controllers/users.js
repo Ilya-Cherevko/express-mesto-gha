@@ -1,11 +1,11 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/users');
-const { secretKey } = require('../utils/constants');
-const NotFoundError = require('../utils/errors/not-found-err');
-const BadRequestError = require('../utils/errors/bad-req-err');
+const User = require('../models/user');
+const ConflictError = require('../utils/errors/conflict');
+const NotFoundError = require('../utils/errors/not-found');
+const BadRequestError = require('../utils/errors/bad-req');
 const AuthError = require('../utils/errors/auth');
-const ConflictError = require('../utils/errors/conflict-err');
+const { secretKey } = require('../utils/constants');
 
 const createUser = (req, res, next) => {
   const {
@@ -20,7 +20,6 @@ const createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-
     .then((user) => res.send({
       name: user.name,
       about: user.about,
@@ -34,7 +33,7 @@ const createUser = (req, res, next) => {
       }
 
       if (err.code === 11000) {
-        next(new ConflictError('Пользователь уже существует!'));
+        next(new ConflictError('Такой пользователь уже существует!'));
         return;
       }
 
@@ -45,7 +44,7 @@ const createUser = (req, res, next) => {
 const getUsers = (_, res, next) => {
   User
     .find({})
-    .then((user) => res.send(user))
+    .then((users) => res.send({ users }))
     .catch((err) => next(err));
 };
 
@@ -54,13 +53,11 @@ const getMeInfo = (req, res, next) => {
     .findById(req.user)
     .then((user) => {
       if (!user) {
-        // если такого пользователя нет, сгенерируем исключение
         next(new NotFoundError('Пользователь с указанным id не найден'));
         return;
       }
       res.send(user);
     })
-  //    .catch(next); // добавили catch
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Пользователь с указанным id не найден'));
@@ -97,11 +94,8 @@ const updateUser = (req, res, next) => {
     return;
   }
 
-  User.findByIdAndUpdate(
-    req.user._id,
-    { name, about },
-    { new: true, runValidators: true },
-  )
+  User
+    .findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -120,11 +114,8 @@ const updateAvatar = (req, res, next) => {
     return;
   }
 
-  User.findByIdAndUpdate(
-    req.user._id,
-    { avatar },
-    { new: true, runValidators: true },
-  )
+  User
+    .findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -149,14 +140,13 @@ const login = (req, res, next) => {
       res.send({ token });
     })
     .catch((err) => next(new AuthError(err.message)));
-  // res.status(401).send({ message: err.message });
 };
 
 module.exports = {
-  createUser,
+  getUsers,
   getMeInfo,
   getUser,
-  getUsers,
+  createUser,
   updateUser,
   updateAvatar,
   login,

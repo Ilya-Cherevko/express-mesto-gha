@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { reqExpLink } = require('../utils/constants');
+const { regExp } = require('../utils/constants');
 
 const cardSchema = new mongoose.Schema({
   name: {
@@ -13,7 +13,7 @@ const cardSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(link) {
-        return reqExpLink.test(link);
+        return regExp.test(link);
       },
     },
   },
