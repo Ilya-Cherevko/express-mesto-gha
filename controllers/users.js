@@ -33,7 +33,7 @@ const createUser = (req, res, next) => {
       }
 
       if (err.code === 11000) {
-        next(new ConflictError('Такой пользователь уже существует!'));
+        next(new ConflictError('Пользователь уже существует!'));
         return;
       }
 
@@ -53,6 +53,7 @@ const getMeInfo = (req, res, next) => {
     .findById(req.user)
     .then((user) => {
       if (!user) {
+        // если такого пользователя нет, сгенерируем исключение
         next(new NotFoundError('Пользователь с указанным id не найден'));
         return;
       }
@@ -90,16 +91,20 @@ const updateUser = (req, res, next) => {
   const { name, about } = req.body;
 
   if (!name || !about) {
-    next(new NotFoundError('Переданы некорректные данные при обновлении профиля.'));
+    next(new NotFoundError('Переданы некорректные данные при обновлении профиля'));
     return;
   }
 
   User
-    .findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
+    .findByIdAndUpdate(
+      req.user._id,
+      { name, about },
+      { new: true, runValidators: true },
+    )
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при обновлении профиля.'));
+        next(new BadRequestError('Переданы некорректные данные при обновлении профиля'));
         return;
       }
       next(err);
@@ -110,16 +115,20 @@ const updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
 
   if (!avatar) {
-    next(new NotFoundError('Переданы некорректные данные при обновлении аватара.'));
+    next(new NotFoundError('Переданы некорректные данные при обновлении аватара'));
     return;
   }
 
   User
-    .findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
+    .findByIdAndUpdate(
+      req.user._id,
+      { avatar },
+      { new: true, runValidators: true },
+    )
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при обновлении аватара.'));
+        next(new BadRequestError('Переданы некорректные данные при обновлении аватара'));
         return;
       }
       next(err);
@@ -143,10 +152,10 @@ const login = (req, res, next) => {
 };
 
 module.exports = {
+  createUser,
   getUsers,
   getMeInfo,
   getUser,
-  createUser,
   updateUser,
   updateAvatar,
   login,

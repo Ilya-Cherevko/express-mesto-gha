@@ -48,8 +48,7 @@ userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        // пользователь не найден — отклоняем промис
-        // с ошибкой и переходим в блок catch
+        // пользователь не найден — отклоняем промис с ошибкой и переходим в блок catch
         return Promise.reject(new Error('Неправильные почта или пароль'));
       }
       // сравниваем переданный пароль и хеш из базы

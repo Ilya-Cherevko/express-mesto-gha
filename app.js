@@ -27,6 +27,8 @@ app.post('/signup', validationUser, createUser);
 app.use('/users', auth, require('./routes/users'));
 app.use('/cards', auth, require('./routes/cards'));
 
+app.use('/', auth, require('./routes/404'));
+
 // обработчики ошибок
 app.use(errors()); // обработчик ошибок celebrate
 app.use(error);
