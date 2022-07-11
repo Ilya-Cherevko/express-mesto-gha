@@ -1,5 +1,5 @@
 const allowedCors = [
-  'http://ilya-cherevko.students.nomoreparties.xyz/',
+  'http://Ilya-cherevko.students.nomorepartiesxyz.ru/',
 ];
 
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
