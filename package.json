@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Ilya-Cherevko/express-mesto-gha.git"
+    "url": "git+https://github.com/Ilya-Cherevko/react-mesto-api-full/backend.git"
   },
   "author": "Ilya Cherevko",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Ilya-Cherevko/express-mesto-gha/issues"
+    "url": "https://github.com/Ilya-Cherevko/react-mesto-api-full/backend/issues"
   },
-  "homepage": "https://github.com/Ilya-Cherevko/express-mesto-gha#readme",
+  "homepage": "https://github.com/Ilya-Cherevko/react-mesto-api-full/backend#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",

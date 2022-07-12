@@ -5,6 +5,7 @@ const ForbiddenError = require('../utils/errors/forbid');
 
 const getCards = (_, res, next) => {
   Card.find()
+    .find({})
     .then((card) => res.send(card.reverse()))
     .catch((err) => next(err));
 };
