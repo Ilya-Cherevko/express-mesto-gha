@@ -1,24 +1,16 @@
 {
   "name": "express-mesto-gha",
   "version": "1.0.0",
-  "description": "Проект Mesto based on Express",
   "main": "app.js",
   "scripts": {
     "lint": "npx eslint .",
     "start": "node app.js",
-    "dev": "nodemon app.js",
-    "test": "jest"
+    "dev": "nodemon app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Ilya-Cherevko/react-mesto-api-full/backend.git"
-  },
+  "keywords": [],
   "author": "Ilya Cherevko",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Ilya-Cherevko/react-mesto-api-full/backend/issues"
-  },
-  "homepage": "https://github.com/Ilya-Cherevko/react-mesto-api-full/backend#readme",
+  "description": "",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
@@ -28,17 +20,14 @@
     "express-winston": "^4.2.0",
     "helmet": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.4.0",
+    "mongoose": "^6.3.3",
     "validator": "^13.7.0",
-    "winston": "^3.8.1"
+    "winston": "^3.7.2"
   },
   "devDependencies": {
-    "eslint": "^8.18.0",
-    "eslint-config-airbnb": "^19.0.4",
+    "eslint": "^8.15.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "jest": "^28.1.2",
-    "nodemon": "^2.0.18"
-  },
-  "keywords": []
+    "nodemon": "^2.0.16"
+  }
 }
