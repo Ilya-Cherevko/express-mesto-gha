@@ -1,6 +1,9 @@
 const allowedCors = [
   'http://ilya-cherevko.students.nomorepartiesxyz.ru',
-  'api.Ilya-cherevko.student.nomoredomains.xyz',
+  'http://api.Ilya-cherevko.student.nomoredomains.xyz',
+  'https://ilya-cherevko.students.nomorepartiesxyz.ru',
+  'https://api.Ilya-cherevko.student.nomoredomains.xyz',
+  'http://localhost:3000',
 ];
 
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
@@ -16,7 +19,8 @@ module.exports = (req, res, next) => {
     if (method === 'OPTIONS') {
       res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
       res.header('Access-Control-Allow-Headers', requestHeaders);
-      res.end();
+      // res.end();
+      return;
     }
   }
   next();

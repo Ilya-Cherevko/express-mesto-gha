@@ -4,16 +4,17 @@ const BadRequestError = require('../utils/errors/bad-req');
 const ForbiddenError = require('../utils/errors/forbid');
 
 const getCards = (_, res, next) => {
-  Card.find()
+  Card
     .find({})
-    .then((card) => res.send(card.reverse()))
+    .then((cards) => res.send(cards.reverse()))
     .catch((err) => next(err));
 };
 
 const createCard = (req, res, next) => {
   const { name, link } = req.body;
 
-  Card.create({ name, link, owner: req.user._id })
+  Card
+    .create({ name, link, owner: req.user._id })
     .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -27,7 +28,8 @@ const createCard = (req, res, next) => {
 const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
 
-  Card.findById(cardId)
+  Card
+    .findById(cardId)
     .then((card) => {
       if (!card) {
         next(new NotFoundError('Карточка с указанным id не найдена.'));
@@ -55,11 +57,8 @@ const deleteCard = (req, res, next) => {
 };
 
 const addLike = (req, res, next) => {
-  Card.findByIdAndUpdate(
-    req.params.cardId,
-    { $addToSet: { likes: req.user._id } }, // добавить id в массив
-    { new: true },
-  )
+  Card
+    .findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
     .then((card) => {
       if (!card) {
         next(new NotFoundError('Передан несуществующий id карточки.'));
@@ -77,11 +76,8 @@ const addLike = (req, res, next) => {
 };
 
 const deleteLike = (req, res, next) => {
-  Card.findByIdAndUpdate(
-    req.params.cardId,
-    { $pull: { likes: req.user._id } }, // убрать id из массива
-    { new: true },
-  )
+  Card
+    .findByIdAndUpdate(req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
     .then((card) => {
       if (!card) {
         next(new NotFoundError('Передан несуществующий id карточки.'));

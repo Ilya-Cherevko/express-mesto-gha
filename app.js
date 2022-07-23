@@ -2,8 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const helmet = require('helmet');
 const { errors } = require('celebrate');
+const helmet = require('helmet');
 const cors = require('./middlewares/cors');
 const { validationUser } = require('./utils/validation');
 const { createUser, login } = require('./controllers/users');
@@ -17,15 +17,15 @@ const app = express();
 
 app.use(cors);
 
+app.use(bodyParser.json()); // для собирания JSON-формата
+app.use(bodyParser.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса
+
 // подключаемся к серверу mongo;
 mongoose.connect('mongodb://localhost:27017/mestodb');
 
 app.use(helmet());
 
 app.use(requestLogger);
-
-app.use(bodyParser.json()); // для собирания JSON-формата
-app.use(bodyParser.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса
 
 // Краш-тест сервера, удалить после ревью
 app.get('/crash-test', () => {
